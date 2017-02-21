@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+</head>
+<body class="">
+<style>
+    .badge-notify{
+        background:#fff;
+        position:relative;
+        top: -20px;
+        color:#2874f0 ;
+        right: 10px;
+        border: 1px solid #2874f0 ;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8"><h2>Happy Shopping</h2></div>
+        <div class="col-sm-4">
+            <div class="glyphicon glyphicon-shopping-cart pull-right my-cart-icon"  data-toggle="modal" data-target="#myModal" style="font-size: 40px; top:40px; color: #2874f0;"><span data-quantity="0" class="badge badge-notify">0</span></div>
+        </div>
+
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-3 text-center">
+            <img src="images/shirt.jpg"  width="150px" height="150px" alt="">
+            <br>
+            Men's Shirt <strong> Rs 499/-</strong>
+            <br>
+            <div class="row">
+                <button class="btn btn-warning my-cart-btn" data-id="1" data-name="Men's Shirt" data-price="499" data-quantity="1" data-image="images/shirt.jpg">Add To Cart</button>
+                <a href="#" class="btn btn-default  ">Details</a>
+            </div>
+        </div>
+        <div class="col-sm-3 text-center">
+            <img src="images/shoes.jpg"  width="150px" height="150px" alt="">
+            <br>
+            Action Shoe <strong>Rs 1299/-</strong>
+            <br>
+            <div class="row">
+                <button class="btn btn-warning my-cart-btn " data-id="2" data-name="Action Shoe" data-price="1299" data-quantity="1" data-image="images/shoes.jpg">Add To Cart</button>
+                <a href="#" class="btn btn-default  ">Details</a>
+            </div>
+        </div>
+        <div class="col-sm-3 text-center">
+            <img src="images/laptop.jpg"  width="150px" height="150px" alt="">
+            <br>
+            Laptop <strong>Rs 44599/-</strong>
+            <br>
+            <div class="row">
+                <button class="btn btn-warning my-cart-btn" data-id="3" data-name="Laptop" data-price="44599" data-quantity="1" data-image="images/laptop.jpg">Add To Cart</button>
+                <a href="#" class="btn btn-default">Details</a>
+            </div>
+        </div>
+        <div class="col-sm-3 text-center">
+            <img src="images/sunglass.jpeg"  width="150px" height="150px" alt="">
+            <br>
+            SunGlass <strong>Rs 600/-</strong>
+            <br>
+            <div class="row">
+                <button class="btn btn-warning my-cart-btn" data-id="4" data-name="SunGlass" data-price="600" data-quantity="1" data-image="images/sunglass.jpeg">Add To Cart</button>
+                <a href="#" class="btn btn-default ">Details</a>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row" style="margin-top: 2%;">
+        <div class="col-sm-3 text-center">
+            <img src="images/trimmer.jpeg"  width="150px" height="150px" alt="">
+            <br>
+            Trimmer <strong>Rs 1349/-</strong>
+            <br>
+            <div class="row">
+                <button class="btn btn-warning my-cart-btn"  data-id="5" data-name="Trimmer" data-price="1349" data-quantity="1" data-image="images/trimmer.jpeg">Add To Cart</button>
+                <a href="#" class="btn btn-default">Details</a>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Products In Cart</h4>
+                    </div>
+                    <div class="modal-body table-responsive">
+                        <table class="table table-bordered table-hover ">
+                            <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody id="ProductList"></tbody>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Check Out</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
+
+    </div>
+
+
+</div>
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+             var data=new Object();
+              var count=localStorage.getItem("count");
+               if($.isNumeric(localStorage.getItem("TotalQuantity"))){
+                   $(".badge-notify").text(localStorage.getItem("TotalQuantity"));
+
+               }   else{
+                   $(".badge-notify").text("0");
+               }
+
+         $(".my-cart-btn").on("click",function () {
+             var  $target=$(this);
+             var productId=$target.data("id");
+             var productName=$target.data("name");
+             var productPrice=$target.data("price");
+             var productImage=$target.data("image");
+             var productQuantity=$target.data("quantity");
+
+             if(count==null){
+                 count=1;
+             }else{
+                 count++;
+             }
+             data={
+                 "productId":productId,
+                 "productName":productName,
+                 "productPrice":productPrice,
+                 "productQuantity":productQuantity,
+                 "productImage":productImage,
+                 "key":count
+             }
+             localStorage.setItem(count,JSON.stringify(data));
+             localStorage.setItem("count",count);
+             if( localStorage.getItem("TotalQuantity")==undefined ||  localStorage.getItem("TotalQuantity")==null || !$.isNumeric(localStorage.getItem("TotalQuantity"))) {
+                     localStorage.setItem("TotalQuantity",0);
+             }
+             if( localStorage.getItem("TotalPrice")==undefined ||  localStorage.getItem("TotalPrice")==null) {
+                     localStorage.setItem("TotalPrice",0);
+             }
+              var quantity=localStorage.getItem("TotalQuantity");
+                     quantity=parseInt(quantity);
+             var totalPrice=localStorage.getItem("TotalPrice");
+                 totalPrice=parseInt(totalPrice)+(productPrice*productQuantity);
+             localStorage.setItem("TotalQuantity",quantity+productQuantity);
+             localStorage.setItem("TotalPrice",totalPrice);
+             $(".badge-notify").text(parseInt(localStorage.getItem("TotalQuantity")));
+
+         });
+
+         $(".my-cart-icon").on("click",function () {
+             ShowCart();
+         });
+
+        $("body").on("click",".remove-from-cart",function () {
+                 var  $target=$(this);
+
+                 var key=$target.data("key");
+                 var quantity=$target.data("quantity");
+                 var price=$target.data("price");
+
+                 var totalQuantity=localStorage.getItem("TotalQuantity");
+                 var totalPrice=localStorage.getItem("TotalPrice");
+                     totalPrice=parseInt(totalPrice);
+                     totalPrice=parseInt(totalPrice-price);
+                     totalQuantity=parseInt(totalQuantity);
+                    totalQuantity=parseInt((totalQuantity-quantity));
+                  localStorage.setItem("TotalQuantity",totalQuantity) ;
+                  localStorage.setItem("TotalPrice",totalPrice);
+                  localStorage.removeItem(key);
+                  $(".badge-notify").text(parseInt(totalQuantity));
+            ShowCart();
+        });
+
+        function ShowCart() {
+            $("#ProductList").empty();
+            var count=localStorage.getItem("count");
+            var table="";
+            for(i=1 ;i<=count;i++){
+                if($.isNumeric(i)){
+                    var data=localStorage.getItem(i);
+                    data=JSON.parse(data);
+
+                    if(data==null){
+                        continue;
+                    }
+
+                    table+="<tr><td>"+data.productName+"</td><td>"+data.productQuantity+"</td><td><strong> Rs "+data.productPrice+"/-</strong></td><td class='remove-from-cart' style='cursor: pointer;' data-quantity='"+data.productQuantity+"' data-price='"+data.productPrice+"' data-name='"+data.productName+"' data-key='"+data.key+"'>Remove</td></tr>";
+
+                }
+
+            }
+
+            var qty=localStorage.getItem('TotalQuantity')  ;
+            if(!$.isNumeric(qty)){
+                qty=0;
+            }
+            var price =localStorage.getItem('TotalPrice');
+            if(!$.isNumeric(price)){
+                price=0;
+            }
+            table+="<tr><td>Total : </td><td>"+qty+"</td><td><strong>Rs "+price+"/-</strong></td><td></td></tr>";
+
+            $("#ProductList").html(table);
+        }
+
+
+
+    });
+</script>
+
+</body>
+</html>
